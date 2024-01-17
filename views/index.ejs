@@ -1,0 +1,16 @@
+<!-- views/index.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/styles.css">
+  <title>SpotMuse</title>
+</head>
+<body>
+  <h1>Welcome <%= user.displayName || 'User' %> to SpotMuse!</h1>
+  <p>Explore top tracks or generate playlists.</p>
+  <a href="/top-tracks">Top Tracks</a>
+  <a href="/playlist-generator">Playlist Generator</a>
+</body>
+</html>
