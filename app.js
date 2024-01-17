@@ -4,6 +4,7 @@ const axios = require('axios');
 const passport = require('passport');
 const SpotifyStrategy = require('passport-spotify').Strategy;
 const session = require('express-session');
+require('dotenv').config();
 
 const app = express();
 
@@ -28,8 +29,8 @@ function ensureAuthenticated(req, res, next) {
   
 
 // Spotify API credentials
-const spotifyClientId = '25086b5a050b439cb52e923d0593699f';
-const spotifyClientSecret = '169c4fe5bd4741da890c65571c765e4d';
+const spotifyClientId = process.env.SPOTIFY_CLIENT_ID;
+const spotifyClientSecret = process.env.SPOTIFY_CLIENT_SECRET;
 const spotifyCallbackUrl = 'http://localhost:3000/auth/callback'; // Change the port as needed
 
 // Configure Passport for Spotify authentication
