@@ -1,18 +1,37 @@
 <!-- views/playlist-generator.ejs -->
 <!-- ... -->
 <body>
-    <h1>Playlist Generator</h1>
-    <p>Create your own playlists based on top tracks!</p>
-    <% if (topTracks.length > 0) { %>
-      <ul>
-        <% topTracks.forEach(track => { %>
-          <li><%= track.name %> by <%= track.artists[0].name %></li>
-        <% }); %>
-      </ul>
-    <% } else { %>
-      <p>No top tracks available.</p>
-    <% } %>
-    <a href="/">Go back</a>
-  </body>
-  <!-- ... -->
-  
+  <h1>Playlist Generator</h1>
+  <p>Create your own playlists based on top tracks!</p>
+
+  <% if (userTopTracks.length > 0) { %>
+    <h2>Your Top Tracks</h2>
+    <ul>
+      <% userTopTracks.forEach(track => { %>
+        <li>
+          <%= track.name %> by <%= track.artists[0].name %>
+          <a href="/add-to-playlist/<%= track.id %>">Add to Playlist</a>
+        </li>
+      <% }); %>
+    </ul>
+  <% } else { %>
+    <p>No top tracks available.</p>
+  <% } %>
+
+  <% if (globalTopTracks.length > 0) { %>
+    <h2>Global Top Tracks</h2>
+    <ul>
+      <% globalTopTracks.forEach(track => { %>
+        <li>
+          <%= track.name %> by <%= track.artists[0].name %>
+          <a href="/add-to-playlist/<%= track.id %>">Add to Playlist</a>
+        </li>
+      <% }); %>
+    </ul>
+  <% } else { %>
+    <p>No global top tracks available.</p>
+  <% } %>
+
+  <a href="/">Go back</a>
+</body>
+<!-- ... -->

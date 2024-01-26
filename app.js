@@ -85,28 +85,32 @@ app.get('/top-tracks', ensureAuthenticated, async (req, res) => {
     }
   });
   
-  // Playlist Generator route
-  app.get('/playlist-generator', ensureAuthenticated, async (req, res) => {
-    try {
-      if (!req.isAuthenticated()) {
-        console.error('User not authenticated');
-        throw new Error('User not authenticated');
-      }
-  
-      // Use Axios to fetch top tracks from the Spotify API
-      const topTracks = await fetchTopTracks(req.user.accessToken); // Implement this function
-      res.render('playlist-generator', { topTracks, user: req.user });
-    } catch (error) {
-      console.error('Error fetching top tracks:', error);
-      res.status(500).send('Internal Server Error');
+// Playlist Generator route
+app.get('/playlist-generator', ensureAuthenticated, async (req, res) => {
+  try {
+    if (!req.isAuthenticated()) {
+      console.error('User not authenticated');
+      throw new Error('User not authenticated');
     }
-  });
-   
+
+    // Use Axios to fetch user's top tracks from the Spotify API
+    const userTopTracks = await fetchTopTracks(req.user.accessToken);
+
+    // Use Axios to fetch global top tracks from the Spotify API
+    const globalTopTracks = await fetchGlobalTopTracks(req.user.accessToken); // Pass the user's access token
+
+    res.render('playlist-generator', { userTopTracks, globalTopTracks, user: req.user });
+  } catch (error) {
+    console.error('Error fetching top tracks:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
   
 
-app.get('/auth/spotify',
+  app.get('/auth/spotify',
   passport.authenticate('spotify', {
-    scope: ['user-read-email', 'user-read-private'],
+    scope: ['user-read-email', 'user-read-private', 'user-top-read'],
     showDialog: true,
   }),
 );
@@ -134,6 +138,22 @@ const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
+
+
+// Function to fetch global top tracks from Spotify API
+// Function to fetch global top tracks from Spotify API
+async function fetchGlobalTopTracks(accessToken) {
+  const apiUrl = "https://api.spotify.com/v1/playlists/37i9dQZEVXbMDoHDwVN2tF"  ; // This endpoint represents the global top tracks
+  const response = await axios.get(apiUrl, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+  return response.data.items;
+}
+
+
+
 
 // Function to fetch top tracks from Spotify API
 async function fetchTopTracks(accessToken) {
