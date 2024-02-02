@@ -142,15 +142,28 @@ app.listen(port, () => {
 
 // Function to fetch global top tracks from Spotify API
 // Function to fetch global top tracks from Spotify API
+// Function to fetch global top tracks from Spotify API
 async function fetchGlobalTopTracks(accessToken) {
-  const apiUrl = "https://api.spotify.com/v1/playlists/37i9dQZEVXbMDoHDwVN2tF"  ; // This endpoint represents the global top tracks
-  const response = await axios.get(apiUrl, {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
-  return response.data.items;
+  const apiUrl = "https://api.spotify.com/v1/playlists/37i9dQZEVXbMDoHDwVN2tF";
+  
+  try {
+    const response = await axios.get(apiUrl, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    console.log('API response:', response.data); // Add this line
+
+    return response.data.items;
+  } catch (error) {
+    console.error('Error fetching global top tracks:', error.message);
+    // Handle the error, you might want to throw it or return a default value
+    throw new Error('Failed to fetch global top tracks');
+  }
 }
+
+
 
 
 
