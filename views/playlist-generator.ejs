@@ -13,7 +13,9 @@
     <ul>
         <% if (userTopTracks && userTopTracks.length > 0) { %>
             <% userTopTracks.forEach(track => { %>
-                <li><%= track.name %> by <%= track.artists[0].name %></li>
+                <li>
+                    <%= track.name %> by <%= displayArtist(track.artists) %>
+                </li>
             <% }); %>
         <% } else { %>
             <p>No top tracks available.</p>
@@ -24,12 +26,22 @@
       <h2>Global Top Tracks</h2>
       <ul>
         <% globalTopTracks.forEach(track => { %>
-          <li><%= track.name %> by <%= track.artists[0].name %></li>
+          <li>
+            <%= track.name %> by <%= displayArtist(track.artists) %>
+          </li>
         <% }); %>
       </ul>
     <% } else { %>
       <p>No global tracks available</p>
     <% } %>
+
+    <% function displayArtist(artists) { %>
+        <% if (artists && artists.length > 0 && artists[0].name) { %>
+            <%= artists[0].name %>
+        <% } else { %>
+            (Artist information not available)
+        <% } %>
+    <% } %>
     
-</body>
+</body> 
 </html>

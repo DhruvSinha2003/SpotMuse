@@ -101,6 +101,7 @@ app.get('/playlist-generator', ensureAuthenticated, async (req, res) => {
 
     res.render('playlist-generator', { userTopTracks, globalTopTracks, user: req.user });
   } catch (error) {
+     console.log('API response:', JSON.stringify(globalTopTracks, null, 2)); 
     console.error('Error fetching top tracks:', error);
     res.status(500).send('Internal Server Error');
   }
@@ -141,31 +142,30 @@ app.listen(port, () => {
 
 
 // Function to fetch global top tracks from Spotify API
-// Function to fetch global top tracks from Spotify API
-// Function to fetch global top tracks from Spotify API
 async function fetchGlobalTopTracks(accessToken) {
   const apiUrl = "https://api.spotify.com/v1/playlists/37i9dQZEVXbMDoHDwVN2tF";
-  
+  const params = {
+    market: "from_token", // Assuming you want to use the user's market
+    fields: "tracks(items(track(name,href,album(name,href))))", // Example fields to include
+    additional_types: "track", // Types your client supports (optional)
+  };
+
   try {
     const response = await axios.get(apiUrl, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
+      params,
     });
 
-    console.log('API response:', response.data); // Add this line
+    console.log('API response:', response.data); // Log the entire response
 
-    return response.data.items;
+    return response.data.tracks.items;
   } catch (error) {
     console.error('Error fetching global top tracks:', error.message);
-    // Handle the error, you might want to throw it or return a default value
     throw new Error('Failed to fetch global top tracks');
   }
 }
-
-
-
-
 
 
 // Function to fetch top tracks from Spotify API
